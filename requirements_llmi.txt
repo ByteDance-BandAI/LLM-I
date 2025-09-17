@@ -2,5 +2,5 @@ markdown
 matplotlib
 qwen_vl_utils
 volcengine-python-sdk[ark]
-flashinfer-python==0.2.3
+flashinfer-python==0.3.1
 seaborn
