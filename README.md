@@ -15,7 +15,7 @@ We support four types of different tools:
 4.  **Image Editing**: Engaged to perform **modifications** on existing visual content, whether inputted,  retrieved or generated.
 
 <div align="center">
-<img src="docs/overall.png" alt="Overview" width="470">
+<img src="docs/overall.png" alt="Overview" width="650">
 </div>
 
 ## Getting Started
@@ -102,7 +102,7 @@ Before you running the script, please make sure all the environment variables ar
 
 ## Evaluation
 <div align="center">
-<img src="docs/llm-example1.png" alt="exp1" width="490">
+<img src="docs/llm-example1.png" alt="exp1" width="650">
 </div>
 
 We use GPT-4o as the evaluator. Before evaluation, please make sure you set the `base_url` and `api_key` in `evaluation/eval_text_only.py` and `evaluation/eval_mm.py`.
