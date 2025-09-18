@@ -1,7 +1,17 @@
+<div align="center">
+<img src="docs/BandAI.png" alt="Logo" width="400">
+</div>
+
 <h1 align="center">LLM-I: LLMs are Naturally Interleaved Multimodal Creators</h1>
 
 
 <h4 align="center"> Zirun Guo, Feng Zhang, Kai Jia, Tao Jin</h5>
+
+<div align="center">
+<a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license"></a>
+<a href="https://arxiv.org/abs/2509.13642" target="_blank"><img src=https://img.shields.io/badge/arXiv-b5212f.svg?logo=arxiv></a>
+<a href="https://huggingface.co/datasets/ByteDance-BandAI/LLM-I" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-blue></a>
+</div>
 
 
 ## Overview
@@ -15,7 +25,7 @@ We support four types of different tools:
 4.  **Image Editing**: Engaged to perform **modifications** on existing visual content, whether inputted,  retrieved or generated.
 
 <div align="center">
-<img src="docs/overall.png" alt="Overview" width="650">
+<img src="docs/overall.png" alt="Overview" width="700">
 </div>
 
 ## Getting Started
@@ -62,6 +72,8 @@ vllm serve Qwen2.5-VL-72B-Instruct \
 
 You can also use other models for LLM-as-a-Judge and MLLM-as-a-Judge.
 
+---
+
 **Tool Deployment**
 
 If you do not have API key for the tools (Seedream or Seededit), you can deploy Qwen-Image and Qwen-Image-Edit locally instead. If you have, you can skip this step.
@@ -102,18 +114,34 @@ Before you running the script, please make sure all the environment variables ar
 
 ## Evaluation
 <div align="center">
-<img src="docs/llm-example1.png" alt="exp1" width="650">
+<img src="docs/llm-example1.png" alt="exp1" width="700">
 </div>
 
 We use GPT-4o as the evaluator. Before evaluation, please make sure you set the `base_url` and `api_key` in `evaluation/eval_text_only.py` and `evaluation/eval_mm.py`.
 
-Evaluation for LLMs:
+---
+
+**Evaluation for LLMs:**
 ```bash
 python evaluation/eval_text_only.py --model `<YOUR_MODEL_PATH>`
 ```
 
-Evaluation for MLLMs:
+**Evaluation for MLLMs:**
 ```bash
 python evaluation/eval_text_only.py --model `<YOUR_MODEL_PATH>`
 python evaluation/eval_mm.py --model `<YOUR_MODEL_PATH>`
+```
+
+## Citation
+If you find our work useful, please cite the following paper:
+```bibtex
+@misc{guo2025llmi,
+    title={LLM-I: LLMs are Naturally Interleaved Multimodal Creators}, 
+    author={Zirun Guo and Feng Zhang and Kai Jia and Tao Jin},
+    year={2025},
+    eprint={2509.13642},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={https://arxiv.org/abs/2509.13642}, 
+}
 ```
