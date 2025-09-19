@@ -28,6 +28,7 @@ from imageutils.generation_qwen import QwenImageClient
 from imageutils.edit_qwen import QwenEditClient
 from imageutils.edit_seed import SeedEditClient
 from verl.utils.reward_score.llmi_rm import is_image_valid, parse_image_tag
+from typing import List
 
 
 class InterleavedGenerator:
@@ -36,18 +37,24 @@ class InterleavedGenerator:
         diffusion_backbone: str = "seed",
         edit_backbone: str = "seed",
         search_topk: int = 15,
+        qwen_image_server_urls: List[str] = None,
+        qwen_edit_server_urls: List[str] = None,
     ):
         if diffusion_backbone == "seed":
             self.diffusion_client = SeedreamClient()
         elif diffusion_backbone == "qwen":
-            self.diffusion_client = QwenImageClient(None)
+            if not qwen_image_server_urls:
+                qwen_image_server_urls = [os.environ.get("QWEN_IMAGE_SERVER_URL")]
+            self.diffusion_client = QwenImageClient(qwen_image_server_urls)
         else:
             raise ValueError(f"Not Implemented diffusion client: {diffusion_backbone}.")
 
         if edit_backbone == "seed":
             self.edit_client = SeedEditClient()
         elif edit_backbone == "qwen":
-            self.edit_client = QwenEditClient(None)
+            if not qwen_edit_server_urls:
+                qwen_edit_server_urls = [os.environ.get("QWEN_EDIT_SERVER_URL")]
+            self.edit_client = QwenEditClient(qwen_edit_server_urls)
         else:
             raise ValueError(f"Not Implemented edit client: {edit_backbone}.")
 

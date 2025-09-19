@@ -78,15 +78,52 @@ You can also use other models for LLM-as-a-Judge and MLLM-as-a-Judge.
 
 If you do not have API key for the tools (Seedream or Seededit), you can deploy Qwen-Image and Qwen-Image-Edit locally instead. If you have, you can skip this step.
 
+**Requirements:**
+- GPU memory: > 60GB per GPU
+
 Start the Qwen-Image server:
 ```bash
-# Start the Qwen-Image server
+# Deploy Qwen-Image generation model on GPU 0
+python examples/qwen_image_deployment/launcher.py --mode generation --model_path Qwen/Qwen-Image --gpus 0
+
+# Deploy on multiple GPUs (e.g., GPUs 0,1,2) for parallel processing
+# Note: Each GPU runs one model instance
+python examples/qwen_image_deployment/launcher.py --mode generation --model_path Qwen/Qwen-Image --gpus 0,1,2
 ```
 
 Start the Qwen-Image-Edit server:
 ```bash
-# Start the Qwen-Image-Edit server
+# Deploy Qwen-Image-Edit model on GPU 1
+python examples/qwen_image_deployment/launcher.py --mode edit --model_path Qwen/Qwen-Image-Edit --gpus 1
+
+# Deploy on multiple GPUs (e.g., GPUs 3,4,5) for parallel processing
+# Note: Each GPU runs one model instance
+python examples/qwen_image_deployment/launcher.py --mode edit --model_path Qwen/Qwen-Image-Edit --gpus 3,4,5
 ```
+
+**Testing the Deployment:**
+
+Test the Qwen-Image generation server:
+```bash
+# Test health check
+python examples/qwen_image_deployment/client.py --mode health --gpu_id 0
+
+# Test image generation
+python examples/qwen_image_deployment/client.py --mode generation --prompt "a beautiful sunset over mountains" --gpu_id 0
+```
+
+Test the Qwen-Image-Edit server:
+```bash
+# Test health check
+python examples/qwen_image_deployment/client.py --mode health --gpu_id 1
+
+# Test image editing (requires an input image)
+python examples/qwen_image_deployment/client.py --mode edit --prompt "make it black and white" --image_path input.jpg --gpu_id 1
+```
+
+**Advanced Deployment Options:**
+
+For custom configurations and detailed documentation, see `examples/qwen_image_deployment/README.md`.
 
 ### Scripts
 **Running Qwen3-4B Model:**
@@ -99,12 +136,29 @@ Before you running the script, please make sure all the environment variables ar
 export RAY_ADDRESS="YOUR_RAY_ADDRESS"
 # for seedream and seededit (you can also deploy Qwen-Image and Qwen-Image-Edit locally)
 export ARK_API_KEY="YOUR_ARK_API_KEY"
+# for Qwen-Image and Qwen-Image-Edit (if you deploy the servers locally)
+export QWEN_IMAGE_SERVER_URL="YOUR_QWEN_IMAGE_SERVER_URL"
+export QWEN_EDIT_SERVER_URL="YOUR_QWEN_EDIT_SERVER_URL"
 # for Google Search
 export SERP_API_KEY="YOUR_SERP_API_KEY"
 # Judge
 export LLM_JUDGE_BASE_URL="YOUR_LLM_JUDGE_BASE_URL"
 export MLLM_JUDGE_BASE_URL="YOUR_MLLM_JUDGE_BASE_URL"
 ```
+
+**Image Generation and Editing Backbone Configuration:**
+
+In the training scripts (`recipe/llmi/llmi_grpo.sh` and `recipe/llmi/mllmi_grpo.sh`), you can configure which backbone to use:
+
+```bash
+# Image Generation Backbone: "seed" or "qwen"
+DIFFUSION_BACKBONE="seed"  # or "qwen"
+# Image Editing Backbone: "seed" or "qwen"  
+EDIT_BACKBONE="seed"       # or "qwen"
+```
+
+- **"seed"**: Uses Seedream for generation and SeedEdit for editing (requires API keys)
+- **"qwen"**: Uses locally deployed Qwen-Image and Qwen-Image-Edit servers
 
 We also support Qwen2.5-VL series:
 ```bash
@@ -116,6 +170,8 @@ Before you running the script, please make sure all the environment variables ar
 <div align="center">
 <img src="docs/llm-example1.png" alt="exp1" width="700">
 </div>
+
+---
 
 We use GPT-4o as the evaluator. Before evaluation, please make sure you set the `base_url` and `api_key` in `evaluation/eval_text_only.py` and `evaluation/eval_mm.py`.
 

@@ -49,7 +49,18 @@ class LLMIRewardManager:
         self.config = config
         self.tokenizer = tokenizer
         self.num_examine = num_examine
-        self.interleaved_generator = InterleavedGenerator()
+        
+        # Get backbone configuration from config
+        diffusion_backbone = getattr(config, 'diffusion_backbone', 'seed')
+        edit_backbone = getattr(config, 'edit_backbone', 'seed')
+        
+        print(f"[LLMI Reward Manager] Using diffusion_backbone: {diffusion_backbone}")
+        print(f"[LLMI Reward Manager] Using edit_backbone: {edit_backbone}")
+        
+        self.interleaved_generator = InterleavedGenerator(
+            diffusion_backbone=diffusion_backbone,
+            edit_backbone=edit_backbone
+        )
         self.compute_score = default_compute_score
         self.reward_fn_key = reward_fn_key
         self.max_resp_len = max_resp_len

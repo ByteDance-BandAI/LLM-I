@@ -17,8 +17,16 @@ NGPUS_PER_NODE=${NGPUS_PER_NODE:-8}
 # ------------------------------------------------------------
 #  API for Diffusion or Search
 # ------------------------------------------------------------
-# for seedream (you can also use Qwen-Image)
+# Image Generation Backbone: "seed" or "qwen"
+DIFFUSION_BACKBONE="seed"
+# Image Editing Backbone: "seed" or "qwen"  
+EDIT_BACKBONE="seed"
+
+# for seedream (IGNORE if you use Qwen-Image)
 export ARK_API_KEY="YOUR_ARK_API_KEY"
+# for Qwen-Image and Qwen-Image-Edit (IGNORE if you use Seedream)
+export QWEN_IMAGE_SERVER_URL="YOUR_QWEN_IMAGE_SERVER_URL"
+export QWEN_EDIT_SERVER_URL="YOUR_QWEN_EDIT_SERVER_URL"
 # for Google Search
 export SERP_API_KEY="YOUR_SERP_API_KEY"
 
@@ -172,6 +180,8 @@ ray job submit --no-wait \
     +reward_model.llm_cfg.llm_factor=${llm_factor} \
     +reward_model.mllm_cfg.mllm_factor=${mllm_factor} \
     +reward_model.img_num_factor=${img_num_factor} \
+    +reward_model.diffusion_backbone="${DIFFUSION_BACKBONE}" \
+    +reward_model.edit_backbone="${EDIT_BACKBONE}" \
     trainer.logger=['console','wandb'] \
     trainer.project_name="${PROJECT_NAME}" \
     trainer.experiment_name="${EXP_NAME}" \
