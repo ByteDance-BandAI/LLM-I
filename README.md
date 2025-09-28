@@ -37,6 +37,8 @@ pip install -e .
 pip install -r requirements_llmi.txt
 ```
 
+Datasets and benchmark can be downloaded on [Huggingface](https://huggingface.co/datasets/ByteDance-BandAI/LLM-I).
+
 ### Deployment
 **Reward Model**
 
@@ -165,6 +167,16 @@ We also support Qwen2.5-VL series:
 bash recipe/llmi/mllmi_grpo.sh
 ```
 Before you running the script, please make sure all the environment variables are set.
+
+## Inference
+
+### Single Prompt Inference
+
+You can run inference on a single prompt and generate an HTML report with the results:
+
+```bash
+python evaluation/inference.py --prompt "Prepare a market research report on automobiles, including data analysis of prominent brands, future trends, and an introduction to the latest products."
+```
 
 ## Evaluation
 <div align="center">
